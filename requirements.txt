@@ -1,0 +1,14 @@
+flask~=2.3.2
+flask_cors
+flask_sqlalchemy
+authlib
+sqlalchemy~=2.0.12
+wtforms~=3.0.1
+email_validator
+flask_login
+flask_limiter
+wtforms
+PyMySQL
+Flask-redis
+Werkzeug~=2.3.3
+DateTime~=4.3
