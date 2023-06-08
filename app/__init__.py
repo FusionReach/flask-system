@@ -35,7 +35,7 @@ def load_user(req):
         pwd = data.get('pwd')
         user = User.get_by_id(_id)
         if not user.check_password(pwd):
-            raise AuthFailed("token has expired")
+            raise AuthFailed("token is invalid")
         return user
     raise AuthFailed
 
@@ -63,7 +63,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     register_blueprints(app)
     register_plugin(app)
     return app
