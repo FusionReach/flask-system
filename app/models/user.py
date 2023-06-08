@@ -9,9 +9,8 @@ class User(UserMixin, Base):
     __tablename__ = 'user'
 
     fields = ['username', 'nickname', 'permission', 'status', 'roles']
-
     username = Column(String(100), primary_key=True)
-    nickname = Column(String(100), nullable=False)
+    nickname = Column(String(100), nullable=True)
     password = Column(String(100), nullable=False)
     permission = Column(Integer, nullable=False)
     status = Column(Integer, nullable=False)
@@ -25,12 +24,12 @@ class User(UserMixin, Base):
         return str(jwt.encode(header=header, payload=data, key=key), encoding='utf-8')
 
     @property
-    def token(self):
-        return self.get_id()
-
-    @property
     def id(self):
         return self.username
+
+    @property
+    def token(self):
+        return self.get_id()
 
     @property
     def roles(self):

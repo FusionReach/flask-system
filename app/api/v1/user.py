@@ -12,7 +12,7 @@ api = RedPrint('user')
 
 @api.route("/<string:id_>", methods=['GET'])
 @login_required
-def get_user(id_):
+def get(id_):
     user = User.get_by_id(id_)
     if user is None:
         raise NotFound('User not found')
@@ -23,7 +23,7 @@ def get_user(id_):
 
 
 @api.route("", methods=['POST'])
-def create_user():
+def create():
     form = CreateUserForm().validate_for_api().data_
     form['nickname'] = form['username']
     form['permission'] = 0
@@ -34,7 +34,7 @@ def create_user():
 
 @api.route("/<string:id_>", methods=['POST'])
 @login_required
-def modify_user(id_):
+def modify(id_):
     form = ModifyUserForm().validate_for_api().data_
     if current_user.permission != 1:
         if current_user.id != id_:
@@ -51,7 +51,7 @@ def modify_user(id_):
 
 @api.route("", methods=['GET'])
 @admin_only
-def search_user():
+def search():
     form = SearchUserForm().validate_for_api().data_
     res = User.search(**form)
     return jsonify({

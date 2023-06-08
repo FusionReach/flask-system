@@ -6,10 +6,18 @@ if __name__ == "__main__":
     app = create_app()
     with app.app_context():
         with db.auto_commit():
-            # 创建一个超级管理员
+            # 创建一个管理员
             user = User()
             user.username = user.nickname = 'admin'
-            user.password = '123456'
+            user.password = 'admin'
             user.permission = 1
+            user.status = 1
+            db.session.add(user)
+
+            # 创建一个普通用户
+            user = User()
+            user.username = user.nickname = 'test'
+            user.password = 'test'
+            user.permission = 0
             user.status = 1
             db.session.add(user)
