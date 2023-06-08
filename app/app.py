@@ -12,6 +12,8 @@ class JSONProvider(_JSONProvider):
             for key in o['fields']:
                 d[key] = o[key]
             return d
+        elif isinstance(o, bytes):
+            return str(o, encoding='utf8')
         elif isinstance(o, APIException):
             return o.to_dict
         else:
