@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 from flask import current_app
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 from app.models.base import Base
 
 
@@ -14,6 +14,7 @@ class User(UserMixin, Base):
     password = Column(String(100), nullable=False)
     permission = Column(Integer, nullable=False)
     status = Column(Integer, nullable=False)
+    create_time = Column(DateTime, nullable=False)
 
     def get_id(self):
         from authlib.jose import jwt

@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_login import current_user, login_required
 
 from app.libs.auth import admin_only
-from app.libs.error_code import CreateSuccess, Forbidden, NotFound, Success
+from app.libs.error_code import DeleteSuccess, Forbidden, NotFound, Success
 from app.libs.redprint import RedPrint
 from app.models.user import User
 from app.validators.user import CreateUserForm, ModifyUserForm, SearchUserForm
@@ -29,7 +29,7 @@ def create():
     form['permission'] = 0
     form['status'] = 1
     User.create(**form)
-    raise CreateSuccess('User has been created')
+    raise Success
 
 
 @api.route("/<string:id_>", methods=['POST'])
@@ -46,15 +46,25 @@ def modify(id_):
     if form['id']:
         raise Forbidden('id 不可修改')
     user.modify(**form)
-    raise Success('User has been modified')
+    raise Success
 
 
 @api.route("", methods=['GET'])
 @admin_only
 def search():
     form = SearchUserForm().validate_for_api().data_
+    User.fields.append("create_time")
     res = User.search(**form)
-    return jsonify({
-        'code': 0,
-        'data': res
-    })
+    raise Success(res)
+
+
+@api.route("/<id_>", methods=['DELETE'])
+@admin_only
+def delete(id_):
+    from app.libs.error_code import Forbidden
+    user = User.get_by_id(id_)
+    if not user.status:
+        raise Forbidden("user has been deleted")
+    user.status = 0
+    User.modify(user)
+    raise DeleteSuccess()

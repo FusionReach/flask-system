@@ -5,8 +5,7 @@ from app.libs.redprint import RedPrint
 from app.models.user import User
 from app.validators.session import LoginForm
 from app.models.mapping import Mapping
-from app.libs.auth import admin_only
-api = RedPrint('session')
+api = RedPrint('token')
 
 
 @api.route("", methods=['GET'])
@@ -28,9 +27,10 @@ def create():
         raise AuthFailed('User not found')
     if not user.check_password(form['password']):
         raise AuthFailed('Wrong username or password')
-    Mapping.set_token(user.token)
+    token = user.token
+    Mapping.set_token(token)
     raise Success({
-        "token" :  user.token
+        "token" : token
     })
 
 

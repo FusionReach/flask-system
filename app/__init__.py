@@ -60,9 +60,9 @@ def register_plugin(flask_app):
     login_manager.init_app(flask_app)
 
 def create_app():
-    app = Flask(__name__)
-    app.config.from_object('app.config.setting')
-    app.config.from_object('app.config.secure')
-    register_blueprints(app)
-    register_plugin(app)
-    return app
+    flask_app = Flask(__name__)
+    flask_app.config.from_object('app.config.setting')
+    flask_app.config.from_object('app.config.secure')
+    register_blueprints(flask_app)
+    register_plugin(flask_app)
+    return flask_app
