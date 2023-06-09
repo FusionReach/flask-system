@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_login import current_user, login_required
-from app.libs.error_code import AuthFailed, DeleteSuccess, Success
+from app.libs.error_code import AuthFailed, DeleteSuccess, Success, Forbidden
 from app.libs.redprint import RedPrint
 from app.models.user import User
 from app.validators.session import LoginForm
@@ -27,6 +27,8 @@ def create():
         raise AuthFailed('User not found')
     if not user.check_password(form['password']):
         raise AuthFailed('Wrong username or password')
+    if not user.status:
+        raise Forbidden("user has been forbidden to login")
     token = user.token
     Mapping.set_token(token)
     raise Success({
