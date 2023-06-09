@@ -23,6 +23,11 @@ class DeleteSuccess(Success):
     code = 202
     error_code = 0
 
+class Error(Success):
+    code = 201
+    error_code = 1006
+
+
 
 class ServerError(APIException):
     code = 500

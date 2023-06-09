@@ -30,6 +30,5 @@ def modify(id_):
 def search():
     form = SearchUserForm().validate_for_api().data_
     User.fields.append("create_time")
-    User.fields.hide("password")
     res = User.search(**form)
     raise Success(res)
